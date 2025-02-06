@@ -10,7 +10,7 @@ def benchmark_pgvector(connection, query_global_descriptors, type="ivfflat" or "
         total_time += time.time() - start_time
     
     avg_time = total_time / len(query_global_descriptors)
-    logger.info(f"  - Average time: {avg_time*1000:.0f} ms on {len(query_global_descriptors)} queries")
+    logger.info(f"  - Average request time: {avg_time*1000:.0f} ms")
 
 def calculate_similarity_pgvector(query_global_descriptor, connection, type="ivfflat" or "hnsw" or "normal", num_nearest_neighbors=20):
 

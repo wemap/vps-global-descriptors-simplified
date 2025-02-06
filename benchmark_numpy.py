@@ -10,7 +10,7 @@ def benchmark_numpy(all_global_descriptors, global_descriptors_to_query, num_nea
         total_time += time.time() - start_time
     
     avg_time = total_time / len(global_descriptors_to_query)
-    logger.info(f"  - Average time: {avg_time*1000:.0f} ms on {len(global_descriptors_to_query)} queries")
+    logger.info(f"  - Average request time: {avg_time*1000:.0f} ms")
     
 def calculate_similarity_numpy(query_global_descriptor, all_global_descriptors, num_nearest_neighbors=20):
 
