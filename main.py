@@ -69,10 +69,19 @@ if __name__ == "__main__":
     
     logger.info("= Benchmarking pgvector =")
     import_data_pgvector(all_global_descriptors, connection, force_import)
-    benchmark_pgvector(connection, random_global_descriptors, num_nearest_neighbors=num_nearest_neighbors, type="normal")
+    benchmark_pgvector(connection, random_global_descriptors, "normal", num_nearest_neighbors)
 
     #########################################################################################
-    #  2.b. pgvector with PCA and indexing
+    #  2.b. pgvector with HNSW binary quantize index
+    #########################################################################################
+
+    logger.info("= Benchmarking pgvector with HNSW binary quantize index =")
+    import_data_pgvector_hnsw_binary_quantize(all_global_descriptors, connection, force_import)
+    benchmark_pgvector(connection, random_global_descriptors, "hnsw_binary_quantize", num_nearest_neighbors)
+
+
+    #########################################################################################
+    #  2.c. pgvector with PCA and indexing
     #   These tests have been done just to see the performance of pgvector indexing
     #   Limitations: 
     #   - does not scale because pca_model is stored in memory
@@ -91,11 +100,11 @@ if __name__ == "__main__":
 
     logger.info("= Benchmarking pgvector with PCA + IVFFlat =")
     import_data_pgvector_pca_ivfflat(all_global_descriptors_pca, connection, force_import)
-    benchmark_pgvector(connection, random_global_descriptors_pca, num_nearest_neighbors=num_nearest_neighbors, type="ivfflat")
+    benchmark_pgvector(connection, random_global_descriptors_pca, "ivfflat", num_nearest_neighbors)
 
     logger.info("= Benchmarking pgvector with PCA + HNSW =")
     import_data_pgvector_pca_hnsw(all_global_descriptors_pca, connection, force_import)
-    benchmark_pgvector(connection, random_global_descriptors_pca, num_nearest_neighbors=num_nearest_neighbors, type="hnsw")
+    benchmark_pgvector(connection, random_global_descriptors_pca, "hnsw", num_nearest_neighbors)
 
 
     connection.close()

@@ -22,4 +22,5 @@ def calculate_similarity_numpy(query_global_descriptor, all_global_descriptors, 
     top_indices = np.argsort(scores)[-num_nearest_neighbors:][::-1]
 
     # results = list(zip(top_indices, scores[top_indices]))
+    # print(results)
     return top_indices

@@ -27,6 +27,26 @@ def import_data_pgvector(all_global_descriptors, connection, force=False):
     connection.commit()
     logger.info(f"  - Import in: {(time.time() - start_time)*1000:.0f} ms")
 
+def import_data_pgvector_hnsw_binary_quantize(all_global_descriptors, connection, force=False):
+
+    if is_table_exists("global_descriptors_hnsw_binary_quantize", connection) and not force:
+        logger.info("  - Skipping import because table already exists")
+        return
+
+    start_time = time.time()
+    with connection.cursor() as cur:
+        cur.execute('DROP TABLE IF EXISTS "global_descriptors_hnsw_binary_quantize"')
+        cur.execute('''
+            CREATE TABLE "global_descriptors_hnsw_binary_quantize" (
+                id int PRIMARY KEY,
+                descriptor vector(4096)
+            );
+            ''')
+        cur.execute('CREATE INDEX ON "global_descriptors_hnsw_binary_quantize" USING hnsw((binary_quantize(descriptor)::bit(4096)) bit_hamming_ops)')
+        cur.executemany('INSERT INTO "global_descriptors_hnsw_binary_quantize" (id, descriptor) VALUES (%s, %s)', enumerate(all_global_descriptors))
+    connection.commit()
+    logger.info(f"  - Import in: {(time.time() - start_time)*1000:.0f} ms")
+
 
 def import_data_pgvector_pca_ivfflat(all_global_descriptors_pca, connection, force=False):
     if is_table_exists("global_descriptors_pca_ivfflat", connection) and not force:

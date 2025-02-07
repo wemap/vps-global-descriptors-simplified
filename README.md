@@ -48,19 +48,45 @@ In order to run it *locally*, you can mount a PostgreSQL server via docker using
 ```bash
 Benchmarking on local with 20 nearest neighbors and 50 iterations
 = Benchmarking numpy =
-  - Average request time: 119 ms
+  - Average request time: 118 ms
 = Benchmarking pgvector =
-  - Import in: 23608 ms
-  - Average request time: 428 ms
+  - Import in: 24128 ms
+  - Request times: min=359ms, max=1511ms, avg=398ms
+= Benchmarking pgvector with HNSW binary quantize index =
+  - Import in: 65211 ms
+  - Request times: min=20ms, max=733ms, avg=35ms
 = Benchmarking pgvector with PCA + IVFFlat =
-  - Import in: 26140 ms
-  - Average request time: 260 ms
+  - Import in: 26328 ms
+  - Request times: min=249ms, max=1207ms, avg=277ms
 = Benchmarking pgvector with PCA + HNSW =
-  - Import in: 270990 ms
-  - Average request time: 225 ms
+  - Import in: 287514 ms
+  - Request times: min=215ms, max=430ms, avg=229ms
 ```
 
-### AWS Aurora PostgreSQL + g5 client
+### AWS PostgreSQL + g5 client
+
+- **Server:** db.m5.large with `default.postgres17` (~$150/month) 
+- **Client:** g5.xlarge
+
+```bash
+Benchmarking on AWS with 20 nearest neighbors and 50 iterations
+= Benchmarking numpy =
+  - Average request time: 203 ms
+= Benchmarking pgvector =
+  - Import in: 10276 ms
+  - Request times: min=524ms, max=1828ms, avg=714ms
+= Benchmarking pgvector with HNSW binary quantize index =
+  - Import in: 115618 ms
+  - Request times: min=38ms, max=49ms, avg=40ms
+= Benchmarking pgvector with PCA + IVFFlat =
+  - Import in: 18198 ms
+  - Request times: min=347ms, max=518ms, avg=368ms
+= Benchmarking pgvector with PCA + HNSW =
+  - Import in: 312572 ms
+  - Request times: min=354ms, max=636ms, avg=399ms
+```
+
+### AWS Aurora PostgreSQL + g5 client (previous test) 
 
 - **Server:** db.r7g.large with `default.aurora-postgresql15` (~$300/month) 
 - **Client:** g5.xlarge
